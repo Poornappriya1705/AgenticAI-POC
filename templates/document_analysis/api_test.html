@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document Compliance & Modification</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    .container { max-width: 800px; margin: auto; }
+    .section { border: 1px solid #ccc; padding: 15px; margin-bottom: 20px; border-radius: 4px; }
+    .result { background: #f9f9f9; padding: 10px; margin-top: 10px; }
+    button { padding: 8px 12px; }
+    a.download-link { display: none; margin-top: 10px; }
+  </style>
+  <script>
+    let documentId = null;
+
+    // Function to get CSRF token from cookies.
+    function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          if (cookie.substring(0, name.length + 1) === (name + '=')) {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
+
+    // Upload document and automatically trigger compliance check.
+    async function uploadDocument(event) {
+      event.preventDefault();
+      const form = document.getElementById('uploadForm');
+      const formData = new FormData(form);
+      const csrftoken = getCookie('csrftoken');
+      try {
+        const response = await fetch('/api/upload/', {
+          method: 'POST',
+          headers: { 'X-CSRFToken': csrftoken },
+          body: formData
+        });
+        const data = await response.json();
+        if (response.ok) {
+          documentId = data.document_id;
+          document.getElementById('uploadResult').textContent = "Upload successful. Document ID: " + documentId;
+          // Automatically trigger compliance check.
+          checkCompliance();
+        } else {
+          document.getElementById('uploadResult').textContent = "Upload error: " + JSON.stringify(data);
+        }
+      } catch (error) {
+        document.getElementById('uploadResult').textContent = "Upload error: " + error;
+      }
+    }
+
+    async function checkCompliance() {
+      if (!documentId) {
+        alert("Please upload a document first.");
+        return;
+      }
+      try {
+        // Using backticks so the documentId is interpolated correctly.
+        const response = await fetch(`/api/compliance/${documentId}/?format=json`, { method: 'GET' });
+        const data = await response.json();
+        if (response.ok) {
+          document.getElementById('complianceResult').innerHTML = data.compliance_report_table;
+        } else {
+          document.getElementById('complianceResult').textContent = "Compliance error: " + JSON.stringify(data);
+        }
+      } catch (error) {
+        document.getElementById('complianceResult').textContent = "Compliance error: " + error;
+      }
+    }
+
+    async function showModifiedText() {
+      if (!documentId) {
+        alert("Please upload a document first.");
+        return;
+      }
+      const csrftoken = getCookie('csrftoken');
+      try {
+        const response = await fetch(`/api/modify/${documentId}/?format=json`, {
+          method: 'POST',
+          headers: { 'X-CSRFToken': csrftoken }
+        });
+        const data = await response.json();
+        if (response.ok) {
+          document.getElementById('modifiedResult').textContent = "Modified Text:\n" + data.modified_text;
+          const downloadLink = document.getElementById('downloadLink');
+          downloadLink.href = data.modified_file_url;
+          downloadLink.style.display = "inline-block";
+          downloadLink.textContent = "Download Modified File";
+        } else {
+          document.getElementById('modifiedResult').textContent = "Modification error: " + JSON.stringify(data);
+        }
+      } catch (error) {
+        document.getElementById('modifiedResult').textContent = "Modification error: " + error;
+      }
+    }
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h1>Document Compliance & Modification</h1>
+    <!-- Upload Section -->
+    <div class="section">
+      <h2>Upload Document</h2>
+      <form id="uploadForm" onsubmit="uploadDocument(event)" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="file" id="fileInput" accept=".pdf, .doc, .docx" required>
+        <button type="submit">Upload Document</button>
+      </form>
+      <div class="result" id="uploadResult"></div>
+    </div>
+    <!-- Compliance Report Section -->
+    <div class="section">
+      <h2>Compliance Report</h2>
+      <div class="result" id="complianceResult">
+        Compliance report will appear here automatically after upload.
+      </div>
+    </div>
+    <!-- Modification Section -->
+    <div class="section">
+      <h2>Modified Document</h2>
+      <button onclick="showModifiedText()">Show Modified Text</button>
+      <div class="result" id="modifiedResult"></div>
+      <a id="downloadLink" class="download-link" href="#" download>Download Modified File</a>
+    </div>
+  </div>
+</body>
+</html>

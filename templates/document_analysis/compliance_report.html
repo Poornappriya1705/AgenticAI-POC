@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Compliance Report</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 4px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    .report-section {
+      margin-bottom: 20px;
+    }
+    .report-section h2 {
+      margin-bottom: 5px;
+      color: #555;
+    }
+    .report-section p {
+      margin: 0 0 10px;
+      padding: 10px;
+      background: #f1f1f1;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Compliance Report</h1>
+    
+    <div class="report-section">
+      <h2>Grammar</h2>
+      <p>{{ compliance_report.grammar }}</p>
+    </div>
+    
+    <div class="report-section">
+      <h2>Sentence Structure</h2>
+      <p>{{ compliance_report.sentence_structure }}</p>
+    </div>
+    
+    <div class="report-section">
+      <h2>Clarity</h2>
+      <p>{{ compliance_report.clarity }}</p>
+    </div>
+    
+    <div class="report-section">
+      <h2>Guidelines Adherence</h2>
+      <p>{{ compliance_report.guidelines_adherence }}</p>
+    </div>
+  </div>
+</body>
+</html>
