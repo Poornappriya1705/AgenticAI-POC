@@ -8,7 +8,7 @@ SECRET_KEY = 'your_secret_key' # Replace with your secret
 
 DEBUG = True
 
-ALLOWED_HOSTS =[]
+ALLOWED_HOSTS =['agenticai-poc.onrender.com']
 
 ## application definiton
 INSTALLED_APPS = [
