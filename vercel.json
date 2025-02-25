@@ -1,5 +1,4 @@
 {
-    "buildCommand": "python3.11 -m venv venv && . venv/bin/activate && pip install --upgrade pip && pip install -r requirements.txt",
     "builds":[{
         "src": "ai_document_compliance/wsgi.py",
         "use": "@vercel/python",
