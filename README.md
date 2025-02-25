@@ -17,7 +17,7 @@ This project is a Django-based application that leverages agentic AI (using Auto
 ### Installation of the Projects
 1. **Clone the Repository:**
    ```bash
-   git clone https://github.com/<your-username>/ai_document_compliance.git
+   git clone https://github.com/Poornappriya1705/AgenticAI-POC.git
    cd ai_document_compliance
 
 2. **Create and Activate a Virtual Environment:**
