@@ -13,5 +13,5 @@
     "env": {
             "DJANGO_SETTINGS_MODULE": "ai_document_compliance.settings",
             "openai_api_key": "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"
-  },
+  }
 }
