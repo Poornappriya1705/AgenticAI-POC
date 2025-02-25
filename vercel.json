@@ -1,0 +1,17 @@
+{
+    "builds":[{
+        "src": "ai_document_compliance/wsgi.py",
+        "use": "@vercel/python",
+        "config":{"maxLambasize":"15mb", "runtime":"python3.9"}
+    }],
+    "routes" :[
+        {
+            "src":"/(.*)",
+            "dest":"ai_document_compliance/wsgi.py"
+        }
+    ],
+    "env": {
+            "DJANGO_SETTINGS_MODULE": "ai_document_compliance.settings",
+            "openai_api_key": "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"
+  },
+}
