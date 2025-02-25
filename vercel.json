@@ -1,6 +1,6 @@
 {
     "builds":[{
-        "src": "ai_document_compliance/wsgi.py",
+        "src": "build.sh",
         "use": "@vercel/python",
         "config":{"maxLambasize":"15mb", "runtime":"python3.9.6"}
     }],
