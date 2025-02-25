@@ -22,9 +22,9 @@ This project is a Django-based application that leverages agentic AI (using Auto
 
 2. **Create and Activate a Virtual Environment:**
 python -m venv venv
-# On Windows:
+*On Windows:*
 venv\Scripts\activate
-# On macOS/Linux:
+*On macOS/Linux*:
 source venv/bin/activate
 
 4. **Install Dependencies:**
